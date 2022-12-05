@@ -1,5 +1,4 @@
 import './App.css';
-
 //components
 import TodoInput from './components/AddTodo';
 import TodoList from './components/TodoList';

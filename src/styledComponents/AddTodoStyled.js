@@ -32,7 +32,7 @@ export const AddTodoBtn = styled.button`
 
 	&:hover {
 		color: rgba(0, 103, 163, 0.5);
-		font-size: 18px;
+		font-size: 19px;
 		transition: all 0.2s;
 	}
 `;

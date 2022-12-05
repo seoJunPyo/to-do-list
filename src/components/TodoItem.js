@@ -1,45 +1,98 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	TodoItemCon,
 	TodoItemTextCon,
 	TodoItemBtnCon,
 } from '../styledComponents/ContainerStyle';
-import { CommonBtn } from '../styledComponents/CommonStyle';
+import { Btn, Input } from '../styledComponents/CommonStyle';
+import { CheckBox } from '../styledComponents/TodoItemStyle';
+import { useQueryClient, useMutation } from 'react-query';
+import { deleteTodoData, editTodoData } from '../api/api';
 
-const TodoItem = () => {
+import { stopPropagation } from '../event/common';
+import { DeleteIcon, EditIcon, CheckIcon } from '../icon/icon';
+
+const TodoItem = (props) => {
+	const { id, text, isCompelete } = props.item;
+	const queryClient = useQueryClient();
+	const [editMode, setEditMode] = useState(false);
+	const [editText, setEditText] = useState(text);
+	const [compelete, setCompelete] = useState(isCompelete);
+
+	const editTodoMutation = useMutation(editTodoData, {
+		onSuccess: () => {
+			queryClient.invalidateQueries();
+		},
+	});
+
+	const deleteTodoMutation = useMutation(deleteTodoData, {
+		onSuccess: () => {
+			queryClient.invalidateQueries();
+		},
+	});
+
+	const editTodoText = (e) => {
+		setEditText(e.target.value);
+	};
+
+	const editTodoItem = () => {
+		if (!editMode) {
+			setEditMode(!editMode);
+			return;
+		}
+		if (text === editText || editText === '') {
+			setEditMode(!editMode);
+			return;
+		}
+		const editData = { text: editText, isCompelete: compelete, id: id };
+		editTodoMutation.mutate(editData);
+		setEditMode(!editMode);
+	};
+
+	const deleteTodoItem = () => {
+		deleteTodoMutation.mutate(id);
+	};
+
+	const TodoCompelete = (e) => {
+		e.stopPropagation();
+		setCompelete(!compelete);
+
+		const editData = { text: editText, isCompelete: !compelete, id: id };
+
+		editTodoMutation.mutate(editData);
+	};
+
 	return (
 		<TodoItemCon>
-			<TodoItemTextCon>
-				<input type="checkbox" />
-				<div>오늘할일</div>
+			<TodoItemTextCon
+				onClick={() => {
+					setEditMode(!editMode);
+				}}>
+				<CheckBox
+					color={compelete ? '#0067a3' : '#fff'}
+					onClick={TodoCompelete}>
+					<CheckIcon />
+				</CheckBox>
+				{editMode ? (
+					<Input
+						onClick={stopPropagation}
+						onChange={editTodoText}
+						placeholder={text}
+					/>
+				) : (
+					<div
+						style={{ textDecoration: isCompelete ? 'line-through' : 'none' }}>
+						{text}
+					</div>
+				)}
 			</TodoItemTextCon>
 			<TodoItemBtnCon>
-				<CommonBtn>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="20"
-						height="20"
-						fill="currentColor"
-						className="bi bi-pencil-square"
-						viewBox="0 0 16 16">
-						<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-						<path
-							fillRule="evenodd"
-							d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-						/>
-					</svg>
-				</CommonBtn>
-				<CommonBtn>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="16"
-						height="16"
-						fill="currentColor"
-						className="bi bi-trash-fill"
-						viewBox="0 0 16 16">
-						<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-					</svg>
-				</CommonBtn>
+				<Btn onClick={editTodoItem}>
+					{editMode ? <CheckIcon /> : <EditIcon />}
+				</Btn>
+				<Btn onClick={deleteTodoItem}>
+					<DeleteIcon />
+				</Btn>
 			</TodoItemBtnCon>
 		</TodoItemCon>
 	);

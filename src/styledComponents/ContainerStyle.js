@@ -29,13 +29,10 @@ export const TodoItemTextCon = styled.div`
 	align-items: center;
 	justify-content: flex-start;
 	width: 80%;
-	padding-left: 8px;
+	margin-left: 8px;
 	font-size: 16px;
 	border-bottom: 1px solid #e3e3e3;
-
-	input {
-		margin-right: 8px;
-	}
+	cursor: pointer;
 `;
 
 export const TodoItemBtnCon = styled.div`
