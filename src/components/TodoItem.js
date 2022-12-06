@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
+import { useQueryClient, useMutation } from 'react-query';
+//API
+import { deleteTodoData, editTodoData } from '../api/api';
+// styled Components
 import {
 	TodoItemCon,
 	TodoItemTextCon,
 	TodoItemBtnCon,
 } from '../styledComponents/ContainerStyle';
-import { Btn, Input } from '../styledComponents/CommonStyle';
-import { CheckBox } from '../styledComponents/TodoItemStyle';
-import { useQueryClient, useMutation } from 'react-query';
-import { deleteTodoData, editTodoData } from '../api/api';
-
-import { stopPropagation } from '../event/common';
+import { CheckBox, Btn, Input } from '../styledComponents/TodoItemStyle';
+//icon
 import { DeleteIcon, EditIcon, CheckIcon } from '../icon/icon';
 
 const TodoItem = (props) => {
 	const { id, text, isCompelete } = props.item;
 	const queryClient = useQueryClient();
+
+	//state
 	const [editMode, setEditMode] = useState(false);
 	const [editText, setEditText] = useState(text);
 	const [compelete, setCompelete] = useState(isCompelete);
 
+	//mutation
 	const editTodoMutation = useMutation(editTodoData, {
 		onSuccess: () => {
 			queryClient.invalidateQueries();
@@ -31,6 +34,7 @@ const TodoItem = (props) => {
 		},
 	});
 
+	// event
 	const editTodoText = (e) => {
 		setEditText(e.target.value);
 	};
@@ -75,7 +79,9 @@ const TodoItem = (props) => {
 				</CheckBox>
 				{editMode ? (
 					<Input
-						onClick={stopPropagation}
+						onClick={(e) => {
+							e.stopPropagation();
+						}}
 						onChange={editTodoText}
 						placeholder={text}
 					/>
@@ -86,6 +92,7 @@ const TodoItem = (props) => {
 					</div>
 				)}
 			</TodoItemTextCon>
+
 			<TodoItemBtnCon>
 				<Btn onClick={editTodoItem}>
 					{editMode ? <CheckIcon /> : <EditIcon />}

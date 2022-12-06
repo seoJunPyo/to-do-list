@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const AddTodoForm = styled.form`
+const AddTodoForm = styled.form`
 	display: flex;
 	justify-content: space-between;
 	align-content: center;
@@ -9,7 +9,7 @@ export const AddTodoForm = styled.form`
 	border-radius: 10px;
 `;
 
-export const AddTodoInput = styled.input.attrs({
+const AddTodoInput = styled.input.attrs({
 	type: 'text',
 	placeholder: 'Add To do!!',
 })`
@@ -19,7 +19,7 @@ export const AddTodoInput = styled.input.attrs({
 	outline: none;
 `;
 
-export const AddTodoBtn = styled.button`
+const AddTodoBtn = styled.button`
 	width: 60px;
 	height: 30px;
 	padding-left: 16px;
@@ -36,3 +36,5 @@ export const AddTodoBtn = styled.button`
 		transition: all 0.2s;
 	}
 `;
+
+export { AddTodoForm, AddTodoInput, AddTodoBtn };

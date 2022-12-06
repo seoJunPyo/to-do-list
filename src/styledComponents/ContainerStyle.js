@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-	width: 600px;
+const Container = styled.div`
+	width: 70%;
 	margin: 100px auto;
 `;
 
-export const TodoListCon = styled.div`
+const TodoListCon = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin-top: 24px;
@@ -14,7 +14,7 @@ export const TodoListCon = styled.div`
 	border-radius: 10px;
 `;
 
-export const TodoItemCon = styled.div`
+const TodoItemCon = styled.div`
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 16px;
@@ -24,7 +24,7 @@ export const TodoItemCon = styled.div`
 	}
 `;
 
-export const TodoItemTextCon = styled.div`
+const TodoItemTextCon = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
@@ -35,7 +35,7 @@ export const TodoItemTextCon = styled.div`
 	cursor: pointer;
 `;
 
-export const TodoItemBtnCon = styled.div`
+const TodoItemBtnCon = styled.div`
 	display: flex;
 	align-content: center;
 	justify-content: center;
@@ -44,3 +44,5 @@ export const TodoItemBtnCon = styled.div`
 		margin-right: 4px;
 	}
 `;
+
+export { Container, TodoListCon, TodoItemCon, TodoItemTextCon, TodoItemBtnCon };

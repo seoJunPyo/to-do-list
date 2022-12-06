@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+// API
 import { addTodoData } from '../api/api';
+// StyledCompnents
 import {
 	AddTodoForm,
 	AddTodoInput,
@@ -8,8 +10,18 @@ import {
 } from '../styledComponents/AddTodoStyled';
 
 const TodoInput = () => {
-	const [todoText, setTodoText] = useState('');
 	const queryClient = useQueryClient();
+	const [todoText, setTodoText] = useState('');
+
+	// const updateTodoListMutation = useMutation(addTodoData, {
+	// 	onSuccess: () => {
+	// 		queryClient.invalidateQueries();
+	// 	},
+	// });
+
+	const getTodoText = (e) => {
+		setTodoText(e.target.value);
+	};
 
 	const updateTodoListMutation = useMutation(addTodoData, {
 		onSuccess: () => {
@@ -17,12 +29,11 @@ const TodoInput = () => {
 		},
 	});
 
-	const getTodoText = (e) => {
-		setTodoText(e.target.value);
-	};
-
 	const addTodoItem = (e) => {
 		e.preventDefault();
+		if (todoText === '') {
+			return;
+		}
 		let todo = { text: todoText, isCompelete: false };
 		updateTodoListMutation.mutate(todo);
 		setTodoText('');

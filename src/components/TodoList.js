@@ -1,8 +1,11 @@
 import React from 'react';
-import { TodoListCon } from '../styledComponents/ContainerStyle';
-import TodoItem from './TodoItem';
 import { useQuery } from 'react-query';
+//components
+import TodoItem from './TodoItem';
+//API
 import { getTodoData } from '../api/api';
+//styled Components
+import { TodoListCon } from '../styledComponents/ContainerStyle';
 
 const TodoList = () => {
 	const result = useQuery('@todoList', getTodoData);
